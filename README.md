@@ -2,7 +2,7 @@
 
 ### How it works?
 All data parses from https://finance.i.ua
-than saves to database. User will get top 10 banks with the best price!
+than saves to database. User will get top 10 most popular or from 50 banks with the best price!
 
 ### How to run on your environment? 
 > requirements : linux os (or mac), installed Docker
