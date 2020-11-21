@@ -52,11 +52,31 @@ def get_bank_history(bank: str):
 
 
 def get_top_last():
+    """
+    Get exchange rates of 10 most popular banks
+    """
     conn = get_connection()
     c = conn.cursor()
     c.execute('''
     SELECT bank, buy_usd, sell_usd FROM currencies WHERE parse_date IN (SELECT MAX(parse_date) FROM currencies) 
+    AND (bank='Monobank' OR bank='ПриватБанк'  OR bank='Укрэксимбанк'  OR bank='Ощадбанк'  OR bank='Альфа-банк'  
+    OR bank='А-Банк' OR bank='Пивденний' OR bank='УкрСиббанк' OR bank='Укргазбанк' OR bank='ПУМБ') 
     ORDER BY buy_usd DESC LIMIT 10;
+    ''')
+    result = c.fetchall()
+    conn.commit()
+    return result
+
+
+def get_all_last():
+    """
+    Get exchange rates from all banks
+    """
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute('''
+    SELECT bank, buy_usd, sell_usd FROM currencies WHERE parse_date IN (SELECT MAX(parse_date) FROM currencies) 
+    ORDER BY buy_usd DESC LIMIT 51;
     ''')
     result = c.fetchall()
     conn.commit()

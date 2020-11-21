@@ -17,7 +17,7 @@ def write_fresh_data():
         i = i + 1
 
 
-def last_report():
+def last_report_top():
     write_fresh_data()
     data = db.get_top_last()
 
@@ -26,11 +26,31 @@ def last_report():
     n = 0
     while n < len(data):
         row = re.sub(r"[\(',\)]", "", str(data[n]))
-        clean_data = clean_data + row + '\n' + '\t'
+        clean_data = clean_data + '* ' + row + '\n' + '\t'
         n = n + 1
 
     report = f""" 
-    СВЕЖИЙ КУРС ДОЛЛАРА 🇺🇸
+    СВЕЖИЙ КУРС ДОЛЛАРА 🇺🇸 TOP-10
+БАНК | ПОКУПКА | ПРОДАЖА 
+ {clean_data}
+    """
+    return report
+
+
+def last_report_all():
+    write_fresh_data()
+    data = db.get_all_last()
+
+    clean_data = ''
+
+    n = 0
+    while n < len(data):
+        row = re.sub(r"[\(',\)]", "", str(data[n]))
+        clean_data = clean_data + '* ' + row + '\n' + '\t'
+        n = n + 1
+
+    report = f""" 
+    СВЕЖИЙ КУРС ДОЛЛАРА 🇺🇸 FULL
 БАНК | ПОКУПКА | ПРОДАЖА 
  {clean_data}
     """
