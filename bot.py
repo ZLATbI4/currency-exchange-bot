@@ -6,7 +6,7 @@ import controller
 logging.basicConfig(level=logging.INFO)
 API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 
-bot = Bot(token=API_TOKEN)  # тянем токен для бота
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 

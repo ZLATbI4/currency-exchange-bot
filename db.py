@@ -34,6 +34,7 @@ def init_db(force: bool = False):
 
 
 def add_data(bank: str, buy_usd: float, sell_usd: float, parse_date: str):
+    init_db()
     conn = get_connection()
     c = conn.cursor()
     c.execute('INSERT INTO currencies (bank, buy_usd, sell_usd, parse_date) VALUES (? , ?, ?, ?)',
@@ -66,6 +67,7 @@ if __name__ == '__main__':
     init_db()
 
     #add_data('Альфа Банк', 28.15, 28.20, '2020-11-20 23:30:04')
+
     # q = get_top_last()
     # print(q)
 
