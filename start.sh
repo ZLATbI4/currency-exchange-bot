@@ -12,7 +12,7 @@ if [ ! "$(docker ps -q -f name=curbot)" ]; then
     docker run --restart=unless-stopped -d --name curbot curbot
 fi
 # if container exists
-if [ $(docker ps -q -f name=curbot) ]; then
+if [ "$(docker ps -q -f name=curbot)" ]; then
   # cleanup
   docker stop curbot
   docker rm curbot
