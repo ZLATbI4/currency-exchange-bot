@@ -10,30 +10,93 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 
-@dp.message_handler(commands=['top'])
-async def report_message(message: types.Message):
-    await bot.send_chat_action(message.chat.id, 'typing')
+def whoami(message):
+    """When use that method we will know who made a request(shows in logs)"""
     user_name = str(message.from_user.full_name)
     user_login = str(message.from_user.username)
     user_id = str(message.from_user.id)
-    user_info = "User: " + user_name + " login: " + user_login + " id: " + user_id \
-                + " Request text: " + str(message.text)
+    user_info = \
+        "User: " + user_name + " login: " + user_login + " id: " + user_id + " Request text: " + str(message.text)
     logger = logging.info(user_info)
-    resp = controller.last_report_top()
+
+
+@dp.message_handler(commands=['start'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.start()
     logger = logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
-@dp.message_handler(commands=['all'])
+@dp.message_handler(commands=['top_usd'])
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
-    user_name = str(message.from_user.full_name)
-    user_login = str(message.from_user.username)
-    user_id = str(message.from_user.id)
-    user_info = "User: " + user_name + " login: " + user_login + " id: " + user_id \
-                + " Request text: " + str(message.text)
-    logger = logging.info(user_info)
-    resp = controller.last_report_all()
+    whoami(message)
+    resp = controller.last_report_top('usd')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['top_eur'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_top('eur')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['top_gbp'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_top('gbp')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['top_pln'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_top('pln')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['all_usd'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_all('usd')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['all_eur'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_all('eur')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['all_gbp'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_all('gbp')
+    logger = logging.info(resp)
+    await bot.send_message(message.chat.id, resp)
+
+
+@dp.message_handler(commands=['all_pln'])
+async def report_message(message: types.Message):
+    await bot.send_chat_action(message.chat.id, 'typing')
+    whoami(message)
+    resp = controller.last_report_all('pln')
     logger = logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
