@@ -30,16 +30,16 @@ def last_report_top(currency: str):
         n = n + 1
 
     if currency == 'usd':
-        report = f"СВЕЖИЙ КУРС ДОЛЛАРА 🇺🇸 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ДОЛЛАРА 🇺🇸 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
     elif currency == 'eur':
-        report = f"СВЕЖИЙ КУРС ЕВРО 🇪🇺 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ЕВРО 🇪🇺 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
     elif currency == 'gbp':
-        report = f"СВЕЖИЙ КУРС ФУНТА 🇬🇧 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ФУНТА 🇬🇧 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
     elif currency == 'pln':
-        report = f"СВЕЖИЙ КУРС ЗЛОТОГО 🇵🇱 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ЗЛОТОГО 🇵🇱 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
 
 
@@ -56,16 +56,16 @@ def last_report_all(currency: str):
         n = n + 1
 
     if currency == 'usd':
-        report = f"СВЕЖИЙ КУРС ДОЛЛАРА 🇺🇸 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ДОЛЛАРА 🇺🇸 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
     elif currency == 'eur':
-        report = f"СВЕЖИЙ КУРС ЕВРО 🇪🇺 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ЕВРО 🇪🇺 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
     elif currency == 'gbp':
-        report = f"СВЕЖИЙ КУРС ФУНТА 🇬🇧 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ФУНТА 🇬🇧 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
     elif currency == 'pln':
-        report = f"СВЕЖИЙ КУРС ЗЛОТОГО 🇵🇱 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
+        report = f"ТЕКУЩИЙ КУРС ЗЛОТОГО 🇵🇱 TOП\nБАНК | ПОКУПКА | ПРОДАЖА\n {clean_data}"
         return report
 
 
