@@ -17,7 +17,7 @@ def whoami(message):
     user_id = str(message.from_user.id)
     user_info = \
         "User: " + user_name + " login: " + user_login + " id: " + user_id + " Request text: " + str(message.text)
-    logger = logging.info(user_info)
+    logging.info(user_info)
 
 
 @dp.message_handler(commands=['start'])
@@ -25,7 +25,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.start()
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -34,7 +34,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_top('usd')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -43,7 +43,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_top('eur')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -52,7 +52,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_top('gbp')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -61,7 +61,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_top('pln')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -70,7 +70,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_all('usd')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -79,7 +79,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_all('eur')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -88,7 +88,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_all('gbp')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
@@ -97,7 +97,7 @@ async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
     resp = controller.last_report_all('pln')
-    logger = logging.info(resp)
+    logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 if __name__ == '__main__':
