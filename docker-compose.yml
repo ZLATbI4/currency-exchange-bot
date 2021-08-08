@@ -11,6 +11,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: "curbot"
       TZ: "Europe/Kiev"
+      LANG: "C.UTF-8"
     healthcheck:
       test: [ "CMD", "mysql" ,"-h", "mysql-curbot", "-P", "3306", "-u", "root", "-e", "SELECT 1", "information_schema" ]
       interval: 30s
@@ -23,7 +24,7 @@ services:
   curbot:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     container_name: curbot
     environment:
       TELEGRAM_API_TOKEN: ${TELEGRAM_API_TOKEN}
