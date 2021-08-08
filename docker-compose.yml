@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mysql-curbot:
+    image: mysql:8
+    container_name: mysql-curbot
+    volumes:
+      - ./db/:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "curbot"
+      TZ: "Europe/Kiev"
+    healthcheck:
+      test: [ "CMD", "mysql" ,"-h", "mysql-curbot", "-P", "3306", "-u", "root", "-e", "SELECT 1", "information_schema" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - currency_bot
+
+  curbot:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: curbot
+    environment:
+      TELEGRAM_API_TOKEN: ${TELEGRAM_API_TOKEN}
+    depends_on:
+      mysql-curbot:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - currency_bot
+
+networks:
+    currency_bot:
+      name: currency_bot

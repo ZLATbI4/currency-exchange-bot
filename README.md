@@ -5,11 +5,11 @@ All data parses from secret website
 then saves to database. User will get message with the best currency rates in Ukrainian banks!
 
 ### How to run on your environment? 
-> requirements : linux os (or mac), installed Docker
+> requirements : linux os (or mac), installed Docker (docker-compose)
 
-Get an API token for your bot, and insert into Dockerfile inside `TELEGRAM_API_TOKEN="here"`
+Get an API token for your bot, and insert into .env file `TELEGRAM_API_TOKEN="here"`
 
-Than run the `start.sh` script as `root` user and enjoy!
+Then run the `start.sh` script as `root` user and enjoy!
 
 chat command list:  
  * `/start` - info message
