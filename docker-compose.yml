@@ -17,6 +17,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    mem_limit: 512M
     restart: unless-stopped
     networks:
       - currency_bot
@@ -31,6 +32,7 @@ services:
     depends_on:
       mysql-curbot:
         condition: service_healthy
+    mem_limit: 256M
     restart: unless-stopped
     networks:
       - currency_bot
