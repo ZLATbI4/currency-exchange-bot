@@ -22,7 +22,7 @@ def get_connection():
                     logging.info(f"You're connected to database: {record}")
                     break
 
-            except mysql.connector.errors.InterfaceError or mysql.connector.errors.OperationalError as e:
+            except (mysql.connector.errors.InterfaceError, mysql.connector.errors.OperationalError) as e:
                 logging.error(f"Error while connecting to MySQL \n {e.msg} \n retry={str(retry_count)}")
                 retry_count = retry_count + 1
                 time.sleep(10)
