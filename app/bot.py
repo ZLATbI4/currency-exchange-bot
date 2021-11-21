@@ -1,5 +1,7 @@
 import os
 import logging
+import aioschedule as aioschedule
+import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 import controller
 
@@ -100,5 +102,26 @@ async def report_message(message: types.Message):
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
+
+async def scheduler():
+    logging.info("Rates will be updated every hour")
+    aioschedule.every().hour.do(controller.write_fresh_data, 'usd')
+    aioschedule.every().hour.do(controller.write_fresh_data, 'eur')
+    aioschedule.every().hour.do(controller.write_fresh_data, 'gbp')
+    aioschedule.every().hour.do(controller.write_fresh_data, 'pln')
+    while True:
+        await aioschedule.run_pending()
+        await asyncio.sleep(1)
+
+
+async def on_startup_tasks(x):
+    controller.write_fresh_data('usd')
+    controller.write_fresh_data('eur')
+    controller.write_fresh_data('gbp')
+    controller.write_fresh_data('pln')
+    asyncio.create_task(scheduler())
+
+
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=True, on_startup = on_startup_tasks)
+

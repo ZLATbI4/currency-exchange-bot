@@ -1,12 +1,15 @@
+import logging
 import parser
 import db
 import re
+import logging
 
 
 def write_fresh_data(currency: str):
     """
     Getting a new data from parser and record to DB
     """
+    logging.info(f"Parse {currency} rates and write into db")
     # collect a new data
     fresh = parser.parse(currency)
 
@@ -15,10 +18,12 @@ def write_fresh_data(currency: str):
     while i < len(fresh[0]):
         db.add_data(currency, fresh[0][i], fresh[1][i], fresh[2][i], fresh[3])
         i = i + 1
+        
+    logging.info(f"Finish {currency} parse/record task")
 
 
 def last_report_top(currency: str):
-    write_fresh_data(currency)
+    # write_fresh_data(currency)
     data = db.get_top_last(currency)
 
     clean_data = ''
@@ -44,7 +49,7 @@ def last_report_top(currency: str):
 
 
 def last_report_all(currency: str):
-    write_fresh_data(currency)
+    # write_fresh_data(currency)
     data = db.get_all_last(currency)
 
     clean_data = ''
