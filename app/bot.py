@@ -1,9 +1,10 @@
 import os
 import logging
-import aioschedule as aioschedule
+import aioschedule
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 import controller
+import db
 
 logging.basicConfig(level=logging.INFO)
 API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
@@ -35,7 +36,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_top('usd')
+    resp = controller.last_report_top(db.USD)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -44,7 +45,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_top('eur')
+    resp = controller.last_report_top(db.EURO)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -53,7 +54,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_top('gbp')
+    resp = controller.last_report_top(db.GBP)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -62,7 +63,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_top('pln')
+    resp = controller.last_report_top(db.PLN)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -71,7 +72,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_all('usd')
+    resp = controller.last_report_all(db.USD)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -80,7 +81,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_all('eur')
+    resp = controller.last_report_all(db.EURO)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -89,7 +90,7 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_all('gbp')
+    resp = controller.last_report_all(db.GBP)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
@@ -98,28 +99,22 @@ async def report_message(message: types.Message):
 async def report_message(message: types.Message):
     await bot.send_chat_action(message.chat.id, 'typing')
     whoami(message)
-    resp = controller.last_report_all('pln')
+    resp = controller.last_report_all(db.PLN)
     logging.info(resp)
     await bot.send_message(message.chat.id, resp)
 
 
 async def scheduler():
     logging.info("Rates will be updated every hour")
-    aioschedule.every().hour.do(controller.write_fresh_data, 'usd')
-    aioschedule.every().hour.do(controller.write_fresh_data, 'eur')
-    aioschedule.every().hour.do(controller.write_fresh_data, 'gbp')
-    aioschedule.every().hour.do(controller.write_fresh_data, 'pln')
     while True:
-        aioschedule.run_pending()
-        await asyncio.sleep(1)
+        controller.write_fresh_data()
+        await asyncio.sleep(360)
 
 
 async def on_startup_tasks(x):
-    controller.write_fresh_data('usd')
-    controller.write_fresh_data('eur')
-    controller.write_fresh_data('gbp')
-    controller.write_fresh_data('pln')
+    logging.info("Perform startup tasks")
     asyncio.create_task(scheduler())
+    logging.info("Startup tasks performed")
 
 
 if __name__ == '__main__':
