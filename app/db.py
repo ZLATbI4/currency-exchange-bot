@@ -8,25 +8,21 @@ logging.basicConfig(level=logging.INFO)
 
 def get_connection():
     global __connection
-    retry_count = 1
     if __connection is None:
-        while retry_count <= 5:
-            try:
-                __connection = mysql.connector.connect(user = 'root', host = 'mysql-curbot', database = 'curbot')
-                if __connection.is_connected():
-                    db_info = str(__connection.get_server_info())
-                    logging.info(f"Connected to MySQL Server version: {db_info} ")
-                    cursor = __connection.cursor()
-                    cursor.execute("select database();")
-                    record = str(cursor.fetchone()[0])
-                    logging.info(f"You're connected to database: {record}")
-                    break
+        try:
+            __connection = mysql.connector.connect(user = 'root', host = 'mysql-curbot', database = 'curbot')
+            if __connection.is_connected():
+                db_info = str(__connection.get_server_info())
+                logging.info(f"Connected to MySQL Server version: {db_info} ")
+                cursor = __connection.cursor()
+                cursor.execute("select database();")
+                record = str(cursor.fetchone()[0])
+                logging.info(f"You're connected to database: {record}")
 
-            except (mysql.connector.errors.InterfaceError, mysql.connector.errors.OperationalError) as e:
-                logging.error(f"Error while connecting to MySQL \n {e.msg} \n retry={str(retry_count)}")
-                retry_count = retry_count + 1
-                time.sleep(10)
+        except (mysql.connector.errors.InterfaceError, mysql.connector.errors.OperationalError) as e:
+            logging.error(f"Error while connecting to MySQL \n {e.msg} \n retry={str(retry_count)}")
 
+    __connection.ping(True)
     return __connection
 
 
@@ -34,13 +30,19 @@ def init_db(force: bool = False):
     """ Check if table exists, else make a new one
         :param force reinstall table
     """
-    conn = get_connection()
-    c = conn.cursor()
+    global __conn, __c
+    try:
+        __conn = get_connection()
+        __c = __conn.cursor()
+    except Exception as e:
+        logging.error(str(e))
+        __conn.reconnect(5, 10)
+        __c = __conn.cursor()
 
     if force:
-        c.execute('DROP TABLE IF EXISTS usd, eur, gbp, pln')
+        __c.execute('DROP TABLE IF EXISTS usd, eur, gbp, pln')
 
-    c.execute('''
+    __c.execute('''
         CREATE TABLE IF NOT EXISTS usd (
             id INT(12) AUTO_INCREMENT PRIMARY KEY,
             bank VARCHAR(255) NOT NULL,
@@ -50,7 +52,7 @@ def init_db(force: bool = False):
         )
     ''')
 
-    c.execute('''
+    __c.execute('''
         CREATE TABLE IF NOT EXISTS eur (
             id INT(12) AUTO_INCREMENT PRIMARY KEY,
             bank VARCHAR(255) NOT NULL,
@@ -60,7 +62,7 @@ def init_db(force: bool = False):
         )
     ''')
 
-    c.execute('''
+    __c.execute('''
         CREATE TABLE IF NOT EXISTS gbp (
             id INT(12) AUTO_INCREMENT PRIMARY KEY,
             bank VARCHAR(255) NOT NULL,
@@ -70,7 +72,7 @@ def init_db(force: bool = False):
         )
     ''')
 
-    c.execute('''
+    __c.execute('''
         CREATE TABLE IF NOT EXISTS pln (
             id INT(12) AUTO_INCREMENT PRIMARY KEY,
             bank VARCHAR(255) NOT NULL,
@@ -80,14 +82,15 @@ def init_db(force: bool = False):
         )
     ''')
 
-    conn.commit()
+    __conn.commit()
 
 
 def add_data(currency: str, bank: str, buy: float, sell: float, parse_date: str):
     init_db()
     conn = get_connection()
     c = conn.cursor()
-    c.execute(f'INSERT INTO {currency} (bank, buy, sell, parse_date) VALUES ("{bank}" , {buy}, {sell}, STR_TO_DATE("{parse_date}","%Y-%m-%d %H:%i:%s"))')
+    c.execute(f'INSERT INTO {currency} (bank, buy, sell, parse_date) '
+              f'VALUES ("{bank}" , {buy}, {sell}, STR_TO_DATE("{parse_date}","%Y-%m-%d %H:%i:%s"))')
     conn.commit()
 
 
