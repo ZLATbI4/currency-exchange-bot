@@ -110,7 +110,7 @@ async def scheduler():
     aioschedule.every().hour.do(controller.write_fresh_data, 'gbp')
     aioschedule.every().hour.do(controller.write_fresh_data, 'pln')
     while True:
-        await aioschedule.run_pending()
+        aioschedule.run_pending()
         await asyncio.sleep(1)
 
 
