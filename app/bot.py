@@ -1,6 +1,5 @@
 import os
 import logging
-import aioschedule
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 import controller
