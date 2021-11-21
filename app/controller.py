@@ -5,21 +5,23 @@ import re
 import logging
 
 
-def write_fresh_data(currency: str):
+def write_fresh_data():
     """
     Getting a new data from parser and record to DB
     """
-    logging.info(f"Parse {currency} rates and write into db")
-    # collect a new data
-    fresh = parser.parse(currency)
+    db.get_connection()
+    for currency in db.currencies:
+        logging.info(f"Parse {currency} rates and write into db")
+        # collect a new data
+        fresh = parser.parse(currency)
 
-    # write to db
-    i = 0
-    while i < len(fresh[0]):
-        db.add_data(currency, fresh[0][i], fresh[1][i], fresh[2][i], fresh[3])
-        i = i + 1
-        
-    logging.info(f"Finish {currency} parse/record task")
+        # write to db
+        i = 0
+        while i < len(fresh[0]):
+            db.add_data(currency, fresh[0][i], fresh[1][i], fresh[2][i], fresh[3])
+            i = i + 1
+
+        logging.info(f"Finish {currency} parse/record task")
 
 
 def last_report_top(currency: str):

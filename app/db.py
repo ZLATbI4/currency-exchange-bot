@@ -5,6 +5,12 @@ import time
 __connection = None
 logging.basicConfig(level=logging.INFO)
 
+USD = 'usd'
+EURO = 'eur'
+GBP = 'gbp'
+PLN = 'pln'
+currencies = [USD, EURO, GBP, PLN]
+
 
 def get_connection():
     global __connection
@@ -30,7 +36,7 @@ def init_db(force: bool = False):
     """ Check if table exists, else make a new one
         :param force reinstall table
     """
-    global __conn, __c
+    global __conn
     try:
         __conn = get_connection()
         __c = __conn.cursor()
@@ -40,47 +46,19 @@ def init_db(force: bool = False):
         __c = __conn.cursor()
 
     if force:
-        __c.execute('DROP TABLE IF EXISTS usd, eur, gbp, pln')
+        for currency in currencies:
+            __c.execute(f'DROP TABLE IF EXISTS {currency}')
 
-    __c.execute('''
-        CREATE TABLE IF NOT EXISTS usd (
-            id INT(12) AUTO_INCREMENT PRIMARY KEY,
-            bank VARCHAR(255) NOT NULL,
-            buy FLOAT(8, 2),
-            sell FLOAT(8, 2),
-            parse_date TIMESTAMP NOT NULL
-        )
-    ''')
-
-    __c.execute('''
-        CREATE TABLE IF NOT EXISTS eur (
-            id INT(12) AUTO_INCREMENT PRIMARY KEY,
-            bank VARCHAR(255) NOT NULL,
-            buy FLOAT(8, 2),
-            sell FLOAT(8, 2),
-            parse_date TIMESTAMP NOT NULL
-        )
-    ''')
-
-    __c.execute('''
-        CREATE TABLE IF NOT EXISTS gbp (
-            id INT(12) AUTO_INCREMENT PRIMARY KEY,
-            bank VARCHAR(255) NOT NULL,
-            buy FLOAT(8, 2),
-            sell FLOAT(8, 2),
-            parse_date TIMESTAMP NOT NULL
-        )
-    ''')
-
-    __c.execute('''
-        CREATE TABLE IF NOT EXISTS pln (
-            id INT(12) AUTO_INCREMENT PRIMARY KEY,
-            bank VARCHAR(255) NOT NULL,
-            buy FLOAT(8, 2),
-            sell FLOAT(8, 2),
-            parse_date TIMESTAMP NOT NULL
-        )
-    ''')
+    for currency in currencies:
+        __c.execute(f'''
+            CREATE TABLE IF NOT EXISTS {currency} (
+                id INT(12) AUTO_INCREMENT PRIMARY KEY,
+                bank VARCHAR(255) NOT NULL,
+                buy FLOAT(8, 2),
+                sell FLOAT(8, 2),
+                parse_date TIMESTAMP NOT NULL
+            )
+        ''')
 
     __conn.commit()
 
@@ -100,21 +78,21 @@ def get_top_last(currency: str):
     """
     conn = get_connection()
     c = conn.cursor()
-    if currency == 'usd' or currency == 'eur':
+    if currency == USD or currency == EURO:
         c.execute(f'''
         SELECT bank, buy, sell FROM {currency} WHERE parse_date IN (SELECT MAX(parse_date) FROM {currency}) 
         AND (bank='Альфа-Банк' OR bank='OTP Bak' OR bank='Укрэксимбанк' OR bank='Ощадбанк' OR bank='Приватбанк'  
         OR bank='А-Банк' OR bank='Пивденный' OR bank='Укрсиббанк' OR bank='Райффайзен Банк' OR bank='ПУМБ') 
         ORDER BY buy DESC LIMIT 10;
         ''')
-    elif currency == 'gbp':
+    elif currency == GBP:
         c.execute(f'''
         SELECT bank, buy, sell FROM {currency} WHERE parse_date IN (SELECT MAX(parse_date) FROM {currency}) 
         AND (bank='Универсал Банк' OR bank='Укргазбанк'  OR bank='Укрэксимбанк' OR bank='Кредобанк' OR bank='Приватбанк'  
         OR bank='Пиреус Банк' OR bank='Пивденный' OR bank='Идея Банк' OR bank='Райффайзен Банк' OR bank='ПУМБ') 
         ORDER BY buy DESC LIMIT 10;
         ''')
-    elif currency == 'pln':
+    elif currency == PLN:
         c.execute(f'''
         SELECT bank, buy, sell FROM {currency} WHERE parse_date IN (SELECT MAX(parse_date) FROM {currency}) 
         AND (bank='Укрэксимбанк' OR bank='Кредобанк'  OR bank='Креди Агриколь Банк' OR bank='Приватбанк' 

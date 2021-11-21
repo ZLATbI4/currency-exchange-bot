@@ -36,21 +36,14 @@ def get_rates(full_page):
 
 # target parse page
 def parse(currency: str):
-    if currency == 'usd':
-        url = 'https://minfin.com.ua/currency/banks/usd/'
-    elif currency == 'eur':
-        url = 'https://minfin.com.ua/currency/banks/eur/'
-    elif currency == 'gbp':
-        url = 'https://minfin.com.ua/currency/banks/gbp/'
-    elif currency == 'pln':
-        url = 'https://minfin.com.ua/currency/banks/pln/'
+    url = f'https://minfin.com.ua/currency/banks/{currency}/'
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) '
+                             'Version/13.1.2 Safari/605.1.15'}
+
+    resp = requests.get(url, headers)
+    if resp.status_code == 200:
+        full_page = resp.text
+        result = get_rates(full_page)
+        return result
     else:
-        url = 'https://minfin.com.ua/currency/banks/usd/'
-
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15'}
-
-    full_page = requests.get(url, headers).text
-
-    result = get_rates(full_page)
-
-    return result
+        raise Exception(f"Status code is not OK : {str(resp.status_code)}")
