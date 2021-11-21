@@ -29,7 +29,7 @@ def get_rates(full_page):
         banks.append(bank)
         buy_rates.append(buy)
         sell_rates.append(sell)
-        print(bank, buy, sell)
+        # print(bank, buy, sell)
 
     return banks, buy_rates, sell_rates, timestamp
 
