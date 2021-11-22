@@ -5,9 +5,12 @@ from aiogram import Bot, Dispatcher, executor, types
 import controller
 import db
 
-logging.basicConfig(level=logging.INFO)
-API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
 
+API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 

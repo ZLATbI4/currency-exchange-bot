@@ -3,7 +3,6 @@ import logging
 import time
 
 __connection = None
-logging.basicConfig(level=logging.INFO)
 
 USD = 'usd'
 EURO = 'eur'
