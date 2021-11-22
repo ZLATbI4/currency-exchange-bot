@@ -110,7 +110,7 @@ async def scheduler():
     logging.info("Rates will be updated every hour")
     while True:
         controller.write_fresh_data()
-        await asyncio.sleep(360)
+        await asyncio.sleep(3600)
 
 
 async def on_startup_tasks(x):
