@@ -1,14 +1,16 @@
 import os
 import logging
-import aioschedule
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
 import controller
 import db
 
-logging.basicConfig(level=logging.INFO)
-API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
+logging.basicConfig(
+    format='%(asctime)s %(levelname)-8s %(message)s',
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S')
 
+API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
@@ -108,7 +110,7 @@ async def scheduler():
     logging.info("Rates will be updated every hour")
     while True:
         controller.write_fresh_data()
-        await asyncio.sleep(360)
+        await asyncio.sleep(3600)
 
 
 async def on_startup_tasks(x):

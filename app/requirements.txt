@@ -3,4 +3,3 @@ requests~=2.25.0
 lxml~=4.6.1
 mysql.connector~=2.2.9
 asyncio~=3.4.3
-aioschedule~=0.5.2
